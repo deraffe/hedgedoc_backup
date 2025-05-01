@@ -60,6 +60,7 @@ def get_name(path: str) -> str:
 
 
 def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
+    log.debug("Parsing %s from %s", mdfile, origin_url)
     host = origin_url.host
     with mdfile.open("r") as md:
         md_content = md.read()
