@@ -93,7 +93,7 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
     soup = bs4.BeautifulSoup(html_content, "html.parser")
     links = []
     for link in soup.find_all("a"):
-        href = link.get("href")
+        href: str = link.get("href")  # pyright: ignore reportAttributeAccessIssue
         if href is None:
             log.debug("Skipping empty link: %s", link)
             continue
@@ -116,10 +116,10 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
         links.append(url)
     images = []
     for img in soup.find_all("img"):
-        url = httpx.URL(img["src"])
+        url = httpx.URL(str(img["src"]))  # pyright: ignore reportIndexIssue
         if url.host == host:
             log.debug("Adding image: %s", img)
-            images.append((url, img["alt"]))
+            images.append((url, str(img["alt"])))  # pyright: ignore reportIndexIssue
         else:
             log.debug("Skipping non-local image: %s", img)
     return ParsedInfo(links=links, images=images)
