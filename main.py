@@ -69,7 +69,10 @@ def download_image(
     uploads_folder: str = "uploads",
 ) -> pathlib.Path:
     name = get_name(url.path)
-    destination_file = destination / uploads_folder / name
+    uploads_path = destination / uploads_folder
+    if not uploads_path.exists():
+        uploads_path.mkdir()
+    destination_file = uploads_path / name
     log.debug("Downloading image %s (%s) to %s", alt_text, url, destination_file)
     if destination_file.exists():
         log.debug("Destination image already exists, skipping download for %s", url)
