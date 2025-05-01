@@ -21,7 +21,10 @@ let
         enable = true;
         package = pkgs.commitizen;
       };
-      markdownlint.enable = true;
+      markdownlint = {
+        enable = true;
+        excludes = [ "^CHANGELOG.md$" ];
+      };
       ruff.enable = true;
       ruff-format.enable = true;
       pyright = {
