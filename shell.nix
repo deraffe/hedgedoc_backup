@@ -15,6 +15,7 @@ let
       check-executables-have-shebangs.enable = true;
       check-shebang-scripts-are-executable.enable = true;
       trim-trailing-whitespace.enable = true;
+      check-symlinks.enable = true;
       nixfmt-rfc-style.enable = true;
       editorconfig-checker.enable = true;
       commitizen = {
