@@ -75,11 +75,14 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
         url = (
             origin_url.copy_with(path=href) if href.startswith("/") else httpx.URL(href)
         )
-        if url.host == host:
-            log.debug("Adding link: %s", link)
-            links.append(url)
-        else:
+        if url.host != host:
             log.debug("Skipping non-local link: %s", link)
+            continue
+        if url.path == "":
+            log.debug("Skipping root link: %s", link)
+            continue
+        log.debug("Adding link: %s", link)
+        links.append(url)
     images = []
     for img in soup.find_all("img"):
         url = httpx.URL(img["src"])
