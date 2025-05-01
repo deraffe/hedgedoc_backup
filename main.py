@@ -24,7 +24,8 @@ def main():
     args = parser.parse_args()
     loglevel = getattr(logging, args.loglevel.upper(), None)
     if not isinstance(loglevel, int):
-        raise TypeError(f"Invalid log level: {args.loglevel}")
+        message = f"Invalid log level: {args.loglevel}"
+        raise TypeError(message)
     logging.basicConfig(level=loglevel)
     backup(args.start_url, args.destination)
 
