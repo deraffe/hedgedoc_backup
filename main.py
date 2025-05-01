@@ -18,9 +18,7 @@ class ParsedInfo:
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--loglevel", default="INFO", help="Loglevel", action="store"
-    )
+    parser.add_argument("--loglevel", default="INFO", help="Loglevel", action="store")
     parser.add_argument("start_url", type=httpx.URL)
     parser.add_argument("destination", type=pathlib.Path, default=pathlib.Path())
     args = parser.parse_args()
@@ -70,15 +68,15 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
     links = []
     for link in soup.find_all("a"):
         log.debug("link: %s", link)
-        url = httpx.URL(link.href)
+        url = httpx.URL(link["href"])
         if url.host == host:
             links.append(url)
     images = []
     for img in soup.find_all("img"):
         log.debug("image: %s", img)
-        url = httpx.URL(img.href)
+        url = httpx.URL(img["href"])
         if url.host == host:
-            images.append((url, img.alt))
+            images.append((url, img["alt"]))
     return ParsedInfo(links=links, images=images)
 
 
