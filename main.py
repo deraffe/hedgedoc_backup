@@ -67,22 +67,26 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
     soup = bs4.BeautifulSoup(html_content, "html.parser")
     links = []
     for link in soup.find_all("a"):
-        log.debug("link: %s", link)
         href = link.get("href")
         if href is None:
-            log.debug("Skipping empty link")
+            log.debug("Skipping empty link: %s", link)
             continue
         url = (
             origin_url.copy_with(path=href) if href.startswith("/") else httpx.URL(href)
         )
         if url.host == host:
+            log.debug("Adding link: %s", link)
             links.append(url)
+        else:
+            log.debug("Skipping non-local link: %s", link)
     images = []
     for img in soup.find_all("img"):
-        log.debug("image: %s", img)
         url = httpx.URL(img["src"])
         if url.host == host:
+            log.debug("Adding image: %s", img)
             images.append((url, img["alt"]))
+        else:
+            log.debug("Skipping non-local image: %s", img)
     return ParsedInfo(links=links, images=images)
 
 
