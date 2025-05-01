@@ -68,7 +68,11 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
     links = []
     for link in soup.find_all("a"):
         log.debug("link: %s", link)
-        url = httpx.URL(link["href"])
+        href = link.get("href")
+        if href is None:
+            log.debug("Skipping empty link")
+            continue
+        url = httpx.URL(href)
         if url.host == host:
             links.append(url)
     images = []
