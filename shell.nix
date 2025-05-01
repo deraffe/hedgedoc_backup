@@ -17,7 +17,10 @@ let
       trim-trailing-whitespace.enable = true;
       nixfmt-rfc-style.enable = true;
       editorconfig-checker.enable = true;
-      commitizen.enable = true;
+      commitizen = {
+        enable = true;
+        package = pkgs.commitizen;
+      };
       markdownlint.enable = true;
       ruff.enable = true;
       ruff-format.enable = true;
