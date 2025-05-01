@@ -1,6 +1,9 @@
 let
   sources = import ./npins;
   pkgs = import sources.nixpkgs { };
+  pyright-wrapper = pkgs.writeShellScript "pyright-wrapper" ''
+    ${pkgs.uv}/bin/uv run ${pkgs.pyright}/bin/pyright "$@"
+  '';
   pre-commit = (import sources."git-hooks.nix").run {
     src = ./.;
     default_stages = [
@@ -18,7 +21,10 @@ let
       markdownlint.enable = true;
       ruff.enable = true;
       ruff-format.enable = true;
-      pyright.enable = true;
+      pyright = {
+        enable = true;
+        settings.binPath = "${pyright-wrapper}";
+      };
     };
   };
   shellPackages = with pkgs; [
