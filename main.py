@@ -72,9 +72,15 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
         if href is None:
             log.debug("Skipping empty link: %s", link)
             continue
-        url = (
-            origin_url.copy_with(path=href) if href.startswith("/") else httpx.URL(href)
-        )
+        try:
+            url = (
+                origin_url.copy_with(path=href)
+                if href.startswith("/")
+                else httpx.URL(href)
+            )
+        except Exception:
+            log.debug("Failed to parse link: %s", link)
+            raise
         if url.host != host:
             log.debug("Skipping non-local link: %s", link)
             continue
