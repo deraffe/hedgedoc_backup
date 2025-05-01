@@ -34,7 +34,7 @@ def main():
 def backup(start_url: httpx.URL, destination: pathlib.Path) -> None:
     log.info("Backing up %s", start_url)
     mdfile = download(start_url, destination)
-    info = parse(mdfile, start_url.host)
+    info = parse(mdfile, start_url)
     for image_url, image_alt in info.images:
         log.warning("Not downloading image '%s' at %s", image_alt, image_url)
     for link in info.links:
@@ -61,7 +61,8 @@ def get_name(path: str) -> str:
     return str(pathpath.name or pathpath.parent)
 
 
-def parse(mdfile: pathlib.Path, host: str) -> ParsedInfo:
+def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
+    host = origin_url.host
     with mdfile.open("r") as md:
         md_content = md.read()
         html_content = markdown.markdown(md_content)
