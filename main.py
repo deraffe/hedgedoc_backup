@@ -47,7 +47,7 @@ def download(
 ) -> pathlib.Path:
     name = get_name(url.path)
     destination_file = destination / (name + extension)
-    download_url = httpx.URL(str(url) + suffix)
+    download_url = url.copy_with(path=(url.path + suffix))
     with destination_file.open("w") as dst:
         response = httpx.get(download_url)
         dst.write(response.text)
