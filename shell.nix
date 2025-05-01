@@ -8,8 +8,17 @@ let
       "pre-push"
     ];
     hooks = {
+      check-case-conflicts.enable = true;
+      check-executables-have-shebangs.enable = true;
+      check-shebang-scripts-are-executable.enable = true;
+      trim-trailing-whitespace.enable = true;
       nixfmt-rfc-style.enable = true;
-      shellcheck.enable = true;
+      editorconfig-checker.enable = true;
+      commitizen.enable = true;
+      markdownlint.enable = true;
+      ruff.enable = true;
+      ruff-format.enable = true;
+      pyright.enable = true;
     };
   };
   shellPackages = with pkgs; [
