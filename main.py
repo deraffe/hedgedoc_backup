@@ -72,7 +72,9 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
         if href is None:
             log.debug("Skipping empty link")
             continue
-        url = httpx.URL(href)
+        url = (
+            origin_url.copy_with(path=href) if href.startswith("/") else httpx.URL(href)
+        )
         if url.host == host:
             links.append(url)
     images = []
