@@ -34,7 +34,7 @@ def backup(start_url: httpx.URL, destination: pathlib.Path) -> None:
     mdfile = download(start_url, destination)
     info = parse(mdfile, start_url)
     for image_url, image_alt in info.images:
-        log.warning("Not downloading image '%s' at %s", image_alt, image_url)
+        download_image(image_url, image_alt, destination)
     for link in info.links:
         backup(link, destination)
 
@@ -60,6 +60,24 @@ def download(
 def get_name(path: str) -> str:
     pathpath = pathlib.Path(path)
     return str(pathpath.name or pathpath.parent)
+
+
+def download_image(
+    url: httpx.URL,
+    alt_text: str,
+    destination: pathlib.Path,
+    uploads_folder: str = "uploads",
+) -> pathlib.Path:
+    name = get_name(url.path)
+    destination_file = destination / uploads_folder / name
+    log.debug("Downloading image %s (%s) to %s", alt_text, url, destination_file)
+    if destination_file.exists():
+        log.debug("Destination image already exists, skipping download for %s", url)
+        return destination_file
+    with destination_file.open("wb") as dst:
+        response = httpx.get(url)
+        dst.write(response.content)
+    return destination_file
 
 
 def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
