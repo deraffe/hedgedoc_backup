@@ -19,7 +19,7 @@ class ParsedInfo:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--loglevel", default="WARNING", help="Loglevel", action="store"
+        "--loglevel", default="INFO", help="Loglevel", action="store"
     )
     parser.add_argument("start_url", type=httpx.URL)
     parser.add_argument("destination", type=pathlib.Path, default=pathlib.Path())
