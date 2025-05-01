@@ -1,0 +1,10 @@
+version = 1
+
+[[annotations]]
+path = [
+  "*",
+  "npins/*",
+]
+precedence = "closest"
+SPDX-FileCopyrightText = "2025 deraffe <git@effa.red>"
+SPDX-License-Identifier = "GPL-3.0-or-later"

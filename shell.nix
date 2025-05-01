@@ -25,6 +25,8 @@ let
         enable = true;
         excludes = [ "^CHANGELOG.md$" ];
       };
+      typos.enable = true;
+      reuse.enable = true;
       ruff.enable = true;
       ruff-format.enable = true;
       pyright = {

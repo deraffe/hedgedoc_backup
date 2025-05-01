@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 deraffe <git@effa.red>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 import argparse
 import dataclasses
 import logging
