@@ -77,7 +77,7 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
             continue
         try:
             url = (
-                origin_url.copy_with(path=href)
+                origin_url.copy_with(path=href.strip("#"))
                 if href.startswith("/")
                 else httpx.URL(href)
             )
