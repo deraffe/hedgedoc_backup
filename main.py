@@ -47,6 +47,9 @@ def download(
 ) -> pathlib.Path:
     name = get_name(url.path)
     destination_file = destination / (name + extension)
+    if destination_file.exists():
+        log.debug("Destination file already exists, skipping download")
+        return destination_file
     download_url = url.copy_with(path=(url.path + suffix))
     with destination_file.open("w") as dst:
         response = httpx.get(download_url)
