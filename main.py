@@ -69,11 +69,13 @@ def parse(mdfile: pathlib.Path, origin_url: httpx.URL) -> ParsedInfo:
     soup = bs4.BeautifulSoup(html_content, "html.parser")
     links = []
     for link in soup.find_all("a"):
+        log.debug("link: %s", link)
         url = httpx.URL(link.href)
         if url.host == host:
             links.append(url)
     images = []
     for img in soup.find_all("img"):
+        log.debug("image: %s", img)
         url = httpx.URL(img.href)
         if url.host == host:
             images.append((url, img.alt))
