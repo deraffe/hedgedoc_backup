@@ -34,14 +34,25 @@ def main():
     backup(args.start_url, args.destination)
 
 
-def backup(start_url: httpx.URL, destination: pathlib.Path) -> None:
+def backup(
+    start_url: httpx.URL,
+    destination: pathlib.Path,
+    visited: set[httpx.URL] | None = None,
+) -> None:
     log.info("Backing up %s", start_url)
+    if visited is None:
+        visited = set()
+    if start_url in visited:
+        log.info("Skipping already visited URL: %s", start_url)
+        return
+    else:
+        visited.add(start_url)
     mdfile = download(start_url, destination)
     info = parse(mdfile, start_url)
     for image_url, image_alt in info.images:
         download_image(image_url, image_alt, destination)
     for link in info.links:
-        backup(link, destination)
+        backup(link, destination, visited)
 
 
 def download(
